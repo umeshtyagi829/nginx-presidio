@@ -1,10 +1,10 @@
 pipeline {
     agent any
       stages {
-          stage('BrainTumorPredictionDeployment'){
+          stage('RunAnsiblePlaybook'){
                 steps {
                     sh "sudo  cp -rvf * /root"
-                    sh 'sudo ansible-paybook main.yml' 
+                    sh 'sudo ansible-playbook main.yml' 
                     
                 }
         }
