@@ -5,7 +5,7 @@ pipeline {
                 steps {
                     sh "sudo date"
                     sh "sudo  cp -rvf * /home/ec2-user"
-                    sh "ansible-playbook   /home/ec2-user/main.yml" 
+                    sh "sudo ansible-playbook   /home/ec2-user/main.yml" 
                     
                 }
         }
