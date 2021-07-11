@@ -4,8 +4,8 @@ pipeline {
           stage('RunAnsiblePlaybook'){
                 steps {
                     sh "sudo date"
-                    sh "sudo  cp -rvf * /root"
-                    sh "ansible-playbook   /root/main.yml" 
+                    sh "sudo  cp -rvf * /home/ec2-user"
+                    sh "ansible-playbook   /home/ec2-user/main.yml" 
                     
                 }
         }
