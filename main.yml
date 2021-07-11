@@ -1,8 +1,6 @@
 - hosts: localhost
   remote_user: ec2-user
   become: True
-  vars_files:
-    - vars.yml
   tasks:
     - name: Enable yum repo
       command: sudo amazon-linux-extras enable nginx1
