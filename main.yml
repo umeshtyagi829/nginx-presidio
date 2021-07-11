@@ -1,0 +1,51 @@
+- hosts: localhost
+  remote_user: ec2-user
+  become: True
+  vars_files:
+    - vars.yml
+  tasks:
+    - name: Enable yum repo
+      command: sudo amazon-linux-extras enable nginx1
+    - name: Setup Nginx server latest version
+      package:
+        name: nginx
+        state: present
+    - name: Setup a custom default index page to display "Hello, World!"
+      copy:
+        dest: /usr/share/nginx/html/index.html
+        content: "Hello, World!"
+    - name: Restart nginx
+      service:
+        name: nginx
+        state: restarted
+    - name: Launch Cloudwatch agent
+      package:
+              name: awslogs
+              state: present
+    - name: Configure the EC2 Linux instance to send Nginx access logs, error logs to a CloudWatch log group but different log stream
+      blockinfile:
+        path: /etc/awslogs/awslogs.conf 
+        insertafter: "log_group_name = /var/log/messages"
+        block: |
+
+
+         [/var/log/nginx/access.log]
+         datetime_format = %d/%b/%Y:%H:%M:%S %z
+         file = /var/log/nginx/access.log
+         buffer_duration = 5000
+         log_stream_name = access.log
+         initial_position = end_of_file
+         log_group_name = /ec2/nginx/logs
+       
+         [/var/log/nginx/error.log]
+         datetime_format = %Y/%m/%d %H:%M:%S
+         file = /var/log/nginx/error.log
+         buffer_duration = 5000
+         log_stream_name = error.log
+         initial_position = end_of_file
+         log_group_name = /ec2/nginx/logsi
+
+    - name: Restart service 
+      service:
+              name: awslogsd
+              state: restarted
