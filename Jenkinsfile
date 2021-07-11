@@ -4,7 +4,7 @@ pipeline {
           stage('RunAnsiblePlaybook'){
                 steps {
                     sh "sudo  cp -rvf * /root"
-                    sh 'sudo ansible-playbook main.yml' 
+                    sh 'sudo ansible-playbook   /root/main.yml' 
                     
                 }
         }
